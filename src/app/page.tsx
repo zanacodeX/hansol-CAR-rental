@@ -147,7 +147,7 @@ export default function HomePage() {
             {[
               { type: "Sedan", image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600&q=80", desc: "Fuel-efficient and comfortable for city driving." },
               { type: "SUV", image: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600&q=80", desc: "Spacious and powerful for countryside trips." },
-              { type: "Van", image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=600&q=80", desc: "Perfect for group travel and family vacations." },
+              { type: "Van", image: "https://static.vecteezy.com/system/resources/thumbnails/007/448/718/small/van-car-in-tropical-natural-jungle-forest-puerto-aventuras-mexico-photo.jpg", desc: "Perfect for group travel and family vacations." },
             ].map((item) => (
               <div key={item.type} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition group">
                 <div className="h-52 overflow-hidden">
