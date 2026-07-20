@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY || "re_placeholder");
+}
 
 type BookingEmailData = {
   id: string;
@@ -31,7 +33,7 @@ export async function sendBookingRequestEmail(booking: BookingEmailData) {
   const ref = booking.id.slice(-8).toUpperCase();
 
   // Email to customer
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Hansol Car Rental <noreply@hansolcarrental.com>",
     to: customerEmail,
     subject: `Booking Request Received - #${ref}`,
@@ -57,7 +59,7 @@ export async function sendBookingRequestEmail(booking: BookingEmailData) {
   });
 
   // Email to admin
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Hansol Car Rental <noreply@hansolcarrental.com>",
     to: process.env.ADMIN_EMAIL || "admin@hansolcarrental.com",
     subject: `New Booking Request - #${ref}`,
@@ -93,7 +95,7 @@ export async function sendBookingConfirmedEmail(booking: {
 
   const ref = booking.id.slice(-8).toUpperCase();
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Hansol Car Rental <noreply@hansolcarrental.com>",
     to: customerEmail,
     subject: `Booking Confirmed - #${ref}`,
@@ -134,7 +136,7 @@ export async function sendBookingCancelledEmail(booking: {
 
   const ref = booking.id.slice(-8).toUpperCase();
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Hansol Car Rental <noreply@hansolcarrental.com>",
     to: customerEmail,
     subject: `Booking Unavailable - #${ref}`,
