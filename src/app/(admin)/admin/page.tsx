@@ -566,6 +566,28 @@ export default function AdminPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Photos</label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    id="photoUrlInput"
+                    type="url"
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                    placeholder="Paste image URL and press Add"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const input = document.getElementById("photoUrlInput") as HTMLInputElement;
+                      const url = input?.value?.trim();
+                      if (!url) return;
+                      const existing = JSON.parse(vehicleForm.photos || "[]");
+                      setVehicleForm({ ...vehicleForm, photos: JSON.stringify([...existing, url]) });
+                      input.value = "";
+                    }}
+                    className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800"
+                  >
+                    Add
+                  </button>
+                </div>
                 <input
                   type="file"
                   accept="image/*"
@@ -581,11 +603,14 @@ export default function AdminPage() {
                       if (data.urls) {
                         const existing = JSON.parse(vehicleForm.photos || "[]");
                         setVehicleForm({ ...vehicleForm, photos: JSON.stringify([...existing, ...data.urls]) });
+                      } else if (data.error) {
+                        alert(data.error + ". Use image URLs instead.");
                       }
-                    } catch { alert("Upload failed"); }
+                    } catch { alert("Upload failed. Use image URLs instead."); }
                   }}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                 />
+                <p className="text-xs text-gray-400 mt-1">Paste image URL or upload file (requires Cloudinary)</p>
                 {(() => {
                   const photos: string[] = JSON.parse(vehicleForm.photos || "[]");
                   if (photos.length === 0) return null;
