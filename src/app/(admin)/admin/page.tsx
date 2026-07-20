@@ -253,8 +253,8 @@ export default function AdminPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       {/* Header */}
-      <div className="flex items-center mb-8">
-        <div className="bg-blue-600 rounded-xl p-3 mr-3">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="bg-blue-600 rounded-xl p-3">
           <Shield className="h-7 w-7 text-white" />
         </div>
         <div>
@@ -264,16 +264,16 @@ export default function AdminPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 mb-8">
-        <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mr-4 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500">Total Vehicles</p>
           <p className="text-2xl font-bold text-gray-900">{vehicles.length}</p>
         </div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4 md:mr-4">
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500">Packages</p>
           <p className="text-2xl font-bold text-gray-900">{packages.length}</p>
         </div>
-        <div className="bg-amber-50 rounded-xl p-4 shadow-sm border border-amber-100 mr-4">
+        <div className="bg-amber-50 rounded-xl p-4 shadow-sm border border-amber-100">
           <p className="text-sm text-amber-600">Pending Bookings</p>
           <p className="text-2xl font-bold text-amber-700">{pendingCount}</p>
         </div>
@@ -284,23 +284,23 @@ export default function AdminPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex mb-6 bg-gray-100 rounded-xl p-1">
+      <div className="flex gap-1 mb-6 bg-gray-100 rounded-xl p-1">
         {([
           { key: "bookings" as const, label: "Bookings", icon: Calendar, count: pendingCount },
           { key: "fleet" as const, label: "Fleet", icon: Car, count: vehicles.length },
           { key: "packages" as const, label: "Packages", icon: Package, count: packages.length },
-        ]).map((tab, i, arr) => (
+        ]).map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex-1 flex items-center justify-center py-2.5 rounded-lg text-sm font-medium transition ${i < arr.length - 1 ? "mr-1" : ""} ${
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition ${
               activeTab === tab.key
                 ? "bg-white text-blue-600 shadow-sm"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            <tab.icon className="h-4 w-4 mr-2" />
-            <span className="mr-2">{tab.label}</span>
+            <tab.icon className="h-4 w-4" />
+            {tab.label}
             {tab.count > 0 && (
               <span className={`text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.key ? "bg-blue-100 text-blue-600" : "bg-gray-200 text-gray-500"}`}>
                 {tab.count}
@@ -313,9 +313,9 @@ export default function AdminPage() {
       {/* ═══════════ BOOKINGS TAB ═══════════ */}
       {activeTab === "bookings" && (
         <>
-          <div className="flex mb-6">
-            {["ALL", "PENDING", "CONFIRMED", "CANCELLED"].map((s, i, arr) => (
-              <button key={s} onClick={() => setBookingFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium transition ${i < arr.length - 1 ? "mr-2" : ""} ${bookingFilter === s ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200 hover:border-blue-400"}`}>
+          <div className="flex gap-2 mb-6">
+            {["ALL", "PENDING", "CONFIRMED", "CANCELLED"].map((s) => (
+              <button key={s} onClick={() => setBookingFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium transition ${bookingFilter === s ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200 hover:border-blue-400"}`}>
                 {s === "ALL" ? "All" : s}
               </button>
             ))}
@@ -333,33 +333,33 @@ export default function AdminPage() {
                 const customerEmail = b.user?.email || b.guestEmail || "N/A";
                 return (
                   <div key={b.id} className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition border border-gray-100">
-                    <div className="flex flex-col lg:flex-row lg:items-start justify-between">
-                        <div className="flex-1 mb-4 lg:mb-0 lg:mr-4">
-                          <div className="flex items-center mb-3">
-                          <h3 className="font-bold text-lg mr-3">#{b.id.slice(-8).toUpperCase()}</h3>
+                    <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="font-bold text-lg">#{b.id.slice(-8).toUpperCase()}</h3>
                           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${b.status === "PENDING" ? "bg-amber-100 text-amber-800" : b.status === "CONFIRMED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                             {b.status}
                           </span>
                         </div>
-                        <div className="grid md:grid-cols-2 text-sm">
-                          <div className="flex items-center mr-3 mb-3 text-gray-600">
-                            <User className="h-4 w-4 flex-shrink-0 mr-2" />
+                        <div className="grid md:grid-cols-2 gap-3 text-sm">
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <User className="h-4 w-4 flex-shrink-0" />
                             <span>{customerName} ({customerEmail})</span>
                           </div>
-                          <div className="flex items-center mb-3 text-gray-600">
-                            <Car className="h-4 w-4 flex-shrink-0 mr-2" />
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <Car className="h-4 w-4 flex-shrink-0" />
                             <span>{b.vehicle.modelName} ({b.vehicle.type})</span>
                           </div>
-                          <div className="flex items-center mr-3 mb-3 text-gray-600">
-                            <Calendar className="h-4 w-4 flex-shrink-0 mr-2" />
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <Calendar className="h-4 w-4 flex-shrink-0" />
                             <span>{new Date(b.pickupDatetime).toLocaleString()} → {new Date(b.dropoffDatetime).toLocaleString()}</span>
                           </div>
-                          <div className="text-gray-600 mb-3">
+                          <div className="text-gray-600">
                             {b.rentalType === "SELF_DRIVE" ? "Self-Drive" : "With Driver"} · {b.pickupType === "GARAGE" ? "Garage" : "Service"}
                             {b.flightNumber ? ` · Flight: ${b.flightNumber}` : ""}
                           </div>
                           {b.selectedPackage && (
-                            <div className="text-gray-600 mr-3">Package: {b.selectedPackage.name}</div>
+                            <div className="text-gray-600">Package: {b.selectedPackage.name}</div>
                           )}
                           {b.accessories.length > 0 && (
                             <div className="text-gray-500 md:col-span-2">Extras: {b.accessories.map((a) => a.name).join(", ")}</div>
@@ -368,19 +368,19 @@ export default function AdminPage() {
                         <p className="text-xl font-bold text-blue-600 mt-3">₩{b.totalEstimatedPrice.toLocaleString()}</p>
                       </div>
                       {b.status === "PENDING" ? (
-                        <div className="flex lg:flex-col">
-                          <button onClick={() => handleBookingAction(b.id, "CONFIRMED")} disabled={actionLoading === b.id} className="flex items-center bg-green-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition mr-2 lg:mr-0 lg:mb-2">
-                            <CheckCircle className="h-4 w-4 mr-2" />
+                        <div className="flex lg:flex-col gap-2">
+                          <button onClick={() => handleBookingAction(b.id, "CONFIRMED")} disabled={actionLoading === b.id} className="flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition">
+                            <CheckCircle className="h-4 w-4" />
                             {actionLoading === b.id ? "..." : "Confirm"}
                           </button>
-                          <button onClick={() => handleBookingAction(b.id, "CANCELLED")} disabled={actionLoading === b.id} className="flex items-center bg-red-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50 transition">
-                            <XCircle className="h-4 w-4 mr-2" />
+                          <button onClick={() => handleBookingAction(b.id, "CANCELLED")} disabled={actionLoading === b.id} className="flex items-center gap-2 bg-red-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50 transition">
+                            <XCircle className="h-4 w-4" />
                             {actionLoading === b.id ? "..." : "Cancel"}
                           </button>
                         </div>
                       ) : (
-                        <div className="flex items-center text-gray-400">
-                          <Clock className="h-4 w-4 mr-2" />
+                        <div className="flex items-center gap-2 text-gray-400">
+                          <Clock className="h-4 w-4" />
                           <span className="text-sm">{b.status === "CONFIRMED" ? "Confirmed" : "Cancelled"}</span>
                         </div>
                       )}
@@ -398,32 +398,32 @@ export default function AdminPage() {
         <>
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm text-gray-500">{vehicles.length} vehicles</p>
-            <button onClick={openAddVehicle} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center">
-              <Plus className="h-4 w-4 mr-2" /> Add Vehicle
+            <button onClick={openAddVehicle} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2">
+              <Plus className="h-4 w-4" /> Add Vehicle
             </button>
           </div>
 
           <div className="space-y-3">
             {vehicles.map((v) => (
               <div key={v.id} className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition border border-gray-100">
-                <div className="flex items-center">
-                  <div className="w-16 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden mr-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                     {v.imageUrl ? (
                       <img src={v.imageUrl} alt={v.modelName} className="w-full h-full object-cover" />
                     ) : (
                       <Car className="h-6 w-6 text-gray-400" />
                     )}
                   </div>
-                  <div className="flex-1 min-w-0 mr-4">
-                    <div className="flex items-center">
-                      <p className="font-bold truncate mr-2">{v.modelName}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold truncate">{v.modelName}</p>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${vehicleStatusColor(v.status)}`}>{v.status}</span>
                     </div>
                     <p className="text-sm text-gray-500">{v.type} · {v.transmission} · {v.seatCount} seats · ₩{v.dailyRate.toLocaleString()}/day</p>
                     {v.packageRates.length > 0 ? (
-                      <div className="flex flex-wrap mt-1.5">
-                        {v.packageRates.map((pr, i, arr) => (
-                          <span key={pr.id} className={`bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium ${i < arr.length - 1 ? "mr-1.5" : ""}`}>
+                      <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        {v.packageRates.map((pr) => (
+                          <span key={pr.id} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">
                             {pr.package.name}: ₩{pr.price.toLocaleString()}
                           </span>
                         ))}
@@ -432,13 +432,13 @@ export default function AdminPage() {
                       <p className="text-xs text-gray-400 mt-1">No packages assigned</p>
                     )}
                   </div>
-                  <div className="flex items-center flex-shrink-0">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     {packages.length > 0 && (
-                      <button onClick={() => openVehiclePkgModal(v)} className="text-gray-600 hover:text-gray-900 px-2 py-1 rounded text-sm flex items-center mr-2" title="Manage Packages">
-                        <Package className="h-4 w-4 mr-1" /> Packages
+                      <button onClick={() => openVehiclePkgModal(v)} className="text-gray-600 hover:text-gray-900 px-2 py-1 rounded text-sm flex items-center gap-1" title="Manage Packages">
+                        <Package className="h-4 w-4" /> Packages
                       </button>
                     )}
-                    <button onClick={() => openEditVehicle(v)} className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded text-sm mr-2">
+                    <button onClick={() => openEditVehicle(v)} className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded text-sm">
                       <Pencil className="h-4 w-4 inline" /> Edit
                     </button>
                     <button onClick={() => handleDeleteVehicle(v.id)} className="text-red-600 hover:text-red-800 px-2 py-1 rounded text-sm">
@@ -464,8 +464,8 @@ export default function AdminPage() {
         <>
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm text-gray-500">{packages.length} packages</p>
-            <button onClick={() => { setPkgForm({ name: "", durationDays: "" }); setEditingPkgId(null); setShowPkgModal(true); }} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center">
-              <Plus className="h-4 w-4 mr-2" /> Add Package
+            <button onClick={() => { setPkgForm({ name: "", durationDays: "" }); setEditingPkgId(null); setShowPkgModal(true); }} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2">
+              <Plus className="h-4 w-4" /> Add Package
             </button>
           </div>
 
@@ -475,17 +475,17 @@ export default function AdminPage() {
               return (
                 <div key={p.id} className="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between hover:shadow-md transition border border-gray-100">
                   <div>
-                    <div className="flex items-center">
-                      <p className="font-bold mr-2">{p.name}</p>
-                      <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-xs font-medium mr-2">{p.durationDays} day(s)</span>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">{p.name}</p>
+                      <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-xs font-medium">{p.durationDays} day(s)</span>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${p.isActive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
                         {p.isActive ? "Active" : "Inactive"}
                       </span>
                     </div>
                     <p className="text-sm text-gray-500 mt-0.5">Assigned to {assignedCount} vehicle(s)</p>
                   </div>
-                  <div className="flex items-center">
-                    <button onClick={() => { setPkgForm({ name: p.name, durationDays: p.durationDays.toString() }); setEditingPkgId(p.id); setShowPkgModal(true); }} className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded text-sm mr-2">
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => { setPkgForm({ name: p.name, durationDays: p.durationDays.toString() }); setEditingPkgId(p.id); setShowPkgModal(true); }} className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded text-sm">
                       <Pencil className="h-4 w-4 inline" /> Edit
                     </button>
                     <button onClick={() => handleDeletePackage(p.id)} className="text-red-600 hover:text-red-800 px-2 py-1 rounded text-sm">
@@ -521,8 +521,8 @@ export default function AdminPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Model Name *</label>
                 <input type="text" value={vehicleForm.modelName} onChange={(e) => setVehicleForm({ ...vehicleForm, modelName: e.target.value })} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Hyundai Tucson 2024" />
               </div>
-              <div className="grid grid-cols-2">
-                <div className="mr-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
                   <select value={vehicleForm.type} onChange={(e) => setVehicleForm({ ...vehicleForm, type: e.target.value })} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
                     <option value="Sedan">Sedan</option>
@@ -538,8 +538,8 @@ export default function AdminPage() {
                   </select>
                 </div>
               </div>
-              <div className="grid grid-cols-2">
-                <div className="mr-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Daily Rate (₩) *</label>
                   <input type="number" value={vehicleForm.dailyRate} onChange={(e) => setVehicleForm({ ...vehicleForm, dailyRate: e.target.value })} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. 80000" />
                 </div>
@@ -566,11 +566,11 @@ export default function AdminPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Photos</label>
-                <div className="flex mb-2">
+                <div className="flex gap-2 mb-2">
                   <input
                     id="photoUrlInput"
                     type="url"
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none mr-2"
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                     placeholder="Paste image URL and press Add"
                   />
                   <button
@@ -633,9 +633,9 @@ export default function AdminPage() {
                   const photos: string[] = JSON.parse(vehicleForm.photos || "[]");
                   if (photos.length === 0) return null;
                   return (
-                    <div className="flex flex-wrap mt-2">
+                    <div className="flex flex-wrap gap-2 mt-2">
                       {photos.map((url, i) => (
-                        <div key={i} className={`relative w-16 h-16 rounded-lg overflow-hidden border group ${i < photos.length - 1 ? "mr-2" : ""}`}>
+                        <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border group">
                           <img src={url} alt="" className="w-full h-full object-cover" />
                           <button type="button" onClick={() => { const updated = photos.filter((_, j) => j !== i); setVehicleForm({ ...vehicleForm, photos: JSON.stringify(updated) }); }} className="absolute top-0 right-0 bg-red-600 text-white rounded-bl-lg px-1 text-xs opacity-0 group-hover:opacity-100 transition">✕</button>
                         </div>
@@ -644,8 +644,8 @@ export default function AdminPage() {
                   );
                 })()}
               </div>
-              <div className="flex pt-4">
-                <button onClick={handleSaveVehicle} className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition mr-3">
+              <div className="flex gap-3 pt-4">
+                <button onClick={handleSaveVehicle} className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
                   {editingVehicleId ? "Save Changes" : "Add Vehicle"}
                 </button>
                 <button onClick={() => setShowVehicleModal(false)} className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition">
@@ -674,8 +674,8 @@ export default function AdminPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Duration (Days) *</label>
                 <input type="number" value={pkgForm.durationDays} onChange={(e) => setPkgForm({ ...pkgForm, durationDays: e.target.value })} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. 3" min="1" />
               </div>
-              <div className="flex pt-4">
-                <button onClick={handleSavePackage} className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition mr-3">
+              <div className="flex gap-3 pt-4">
+                <button onClick={handleSavePackage} className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
                   {editingPkgId ? "Save Changes" : "Add Package"}
                 </button>
                 <button onClick={() => setShowPkgModal(false)} className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition">
@@ -704,13 +704,13 @@ export default function AdminPage() {
                 <p className="text-sm text-gray-400 text-center py-4">No packages assigned yet. Add one below.</p>
               )}
               {vehiclePkgTarget.packageRates.map((pr) => (
-                <div key={pr.id} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                  <div className="flex-1 mr-3">
+                <div key={pr.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div className="flex-1">
                     <p className="font-medium text-sm">{pr.package.name}</p>
                     <p className="text-xs text-gray-500">{pr.package.durationDays} day(s)</p>
                   </div>
-                  <div className="flex items-center mr-3">
-                    <span className="text-xs text-gray-500 mr-2">₩</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">₩</span>
                     <input
                       type="number"
                       value={vehiclePkgRates[pr.package.id] || ""}
@@ -736,15 +736,15 @@ export default function AdminPage() {
               return (
                 <div className="border-t pt-4">
                   <p className="text-sm font-medium text-gray-700 mb-2">Add a package to this vehicle:</p>
-                  <div className="flex items-end">
-                    <div className="flex-1 mr-2">
+                  <div className="flex gap-2 items-end">
+                    <div className="flex-1">
                       <select value={newPkgId} onChange={(e) => setNewPkgId(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
                         {unassigned.map((p) => (
                           <option key={p.id} value={p.id}>{p.name} ({p.durationDays}d)</option>
                         ))}
                       </select>
                     </div>
-                    <div className="w-28 mr-2">
+                    <div className="w-28">
                       <input
                         type="number"
                         value={newPkgPrice}
@@ -765,8 +765,8 @@ export default function AdminPage() {
               );
             })()}
 
-            <div className="flex pt-6">
-              <button onClick={handleSaveVehiclePackages} className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition mr-3">
+            <div className="flex gap-3 pt-6">
+              <button onClick={handleSaveVehiclePackages} className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
                 Save
               </button>
               <button onClick={() => setShowVehiclePkgModal(false)} className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition">

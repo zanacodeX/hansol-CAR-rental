@@ -25,8 +25,8 @@ export default function AboutPage() {
       {/* Story */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 items-center">
-            <div className="mr-12">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Story</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Hansol Car Rental was founded with a simple mission: to make exploring South Korea easy, comfortable, and affordable for everyone. Whether you&apos;re a tourist discovering the beauty of Jeju Island, a business traveler navigating Seoul, or a local planning a weekend getaway — we have the perfect vehicle for you.
@@ -60,7 +60,7 @@ export default function AboutPage() {
           <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">
             Everything we do is driven by our commitment to excellence.
           </p>
-          <div className="grid md:grid-cols-3">
+          <div className="grid md:grid-cols-3 gap-8">
             {[
               { icon: Shield, title: "Safety First", desc: "Every vehicle undergoes rigorous inspection and maintenance. Your safety is our top priority on every journey." },
               { icon: Heart, title: "Customer Care", desc: "We treat every customer like family. From booking to return, our team is here to make your experience seamless." },
@@ -68,8 +68,8 @@ export default function AboutPage() {
               { icon: Globe, title: "Tourist Friendly", desc: "English-speaking staff, IDP guidance, GPS navigation, and curated travel tips for exploring Korea." },
               { icon: Users, title: "Professional Drivers", desc: "Need a chauffeur? Our licensed, multilingual drivers know every corner of South Korea." },
               { icon: Car, title: "Flexible Options", desc: "Self-drive or with driver. Airport pickup or garage collection. 3-day or weekly packages — you decide." },
-            ].map((item, index) => (
-              <div key={item.title} className={`bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100${index < 5 ? ' mb-8' : ''}`}>
+            ].map((item) => (
+              <div key={item.title} className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100">
                 <item.icon className="h-10 w-10 text-blue-600 mb-4" />
                 <h3 className="text-lg font-bold mb-2">{item.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
@@ -82,14 +82,14 @@ export default function AboutPage() {
       {/* Stats */}
       <section className="py-20 bg-blue-600 text-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { number: "500+", label: "Happy Customers" },
               { number: "50+", label: "Vehicles" },
               { number: "10K+", label: "Trips Completed" },
               { number: "4.9", label: "Average Rating" },
-            ].map((stat, index) => (
-              <div key={stat.label} className={index < 3 ? 'mb-8' : undefined}>
+            ].map((stat) => (
+              <div key={stat.label}>
                 <p className="text-4xl md:text-5xl font-extrabold mb-2">{stat.number}</p>
                 <p className="text-blue-200 text-sm">{stat.label}</p>
               </div>
@@ -105,13 +105,13 @@ export default function AboutPage() {
           <p className="text-gray-500 mb-12 max-w-xl mx-auto">
             A dedicated team of automotive enthusiasts committed to your travel experience.
           </p>
-          <div className="grid md:grid-cols-3 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               { name: "Jiwon Park", role: "Founder & CEO", initial: "J" },
               { name: "Minjun Kim", role: "Fleet Manager", initial: "M" },
               { name: "Yuna Choi", role: "Customer Relations", initial: "Y" },
-            ].map((person, index) => (
-              <div key={person.name} className={`p-6${index < 2 ? ' mb-8' : ''}`}>
+            ].map((person) => (
+              <div key={person.name} className="p-6">
                 <div className="w-24 h-24 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
                   {person.initial}
                 </div>

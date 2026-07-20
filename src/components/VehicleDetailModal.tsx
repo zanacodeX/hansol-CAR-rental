@@ -107,17 +107,17 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex">
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
                     {photos.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setPhotoIdx(i)}
-                        className={`w-2 h-2 rounded-full ml-1.5 first:ml-0 transition ${i === photoIdx ? "bg-white" : "bg-white/50"}`}
+                        className={`w-2 h-2 rounded-full transition ${i === photoIdx ? "bg-white" : "bg-white/50"}`}
                       />
                     ))}
                   </div>
-                  <div className="absolute bottom-3 right-3 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center">
-                    <Camera className="h-3 w-3 mr-1" /> {photoIdx + 1}/{photos.length}
+                  <div className="absolute bottom-3 right-3 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <Camera className="h-3 w-3" /> {photoIdx + 1}/{photos.length}
                   </div>
                 </>
               )}
@@ -136,11 +136,11 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
         <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="mb-4">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{vehicle.modelName}</h2>
-            <div className="flex items-center flex-wrap mt-2 text-sm text-gray-500">
-              <span className="flex items-center mr-3"><Car className="h-4 w-4 mr-1" /> {vehicle.type}</span>
-              <span className="flex items-center mr-3"><Settings2 className="h-4 w-4 mr-1" /> {vehicle.transmission}</span>
-              <span className="flex items-center"><Users className="h-4 w-4 mr-1" /> {vehicle.seatCount} seats</span>
+            <h2 className="text-2xl font-bold text-gray-900">{vehicle.modelName}</h2>
+            <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+              <span className="flex items-center gap-1"><Car className="h-4 w-4" /> {vehicle.type}</span>
+              <span className="flex items-center gap-1"><Settings2 className="h-4 w-4" /> {vehicle.transmission}</span>
+              <span className="flex items-center gap-1"><Users className="h-4 w-4" /> {vehicle.seatCount} seats</span>
             </div>
           </div>
 
@@ -152,10 +152,10 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
           {featuresList.length > 0 && (
             <div className="mb-5">
               <h3 className="font-semibold text-sm text-gray-800 mb-2">Features</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                 {featuresList.map((f) => (
-                  <div key={f} className="flex items-center text-xs text-gray-600 bg-gray-50 rounded-md px-2 py-1.5 mb-1.5 mr-1.5">
-                    <Check className="h-3 w-3 text-green-500 mr-1.5 flex-shrink-0" />
+                  <div key={f} className="flex items-center gap-1.5 text-xs text-gray-600 bg-gray-50 rounded-md px-2 py-1.5">
+                    <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
                     {f}
                   </div>
                 ))}
@@ -167,9 +167,10 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
           <div>
             <h3 className="font-semibold text-sm text-gray-800 mb-3">Rental Packages</h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3">
+            {/* 3-column grid: Daily + package cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {/* Daily rate card */}
-              <div className="rounded-xl border border-gray-200 p-4 flex flex-col items-center text-center hover:border-blue-300 hover:shadow-sm transition mb-3 sm:mb-0 sm:mr-3">
+              <div className="rounded-xl border border-gray-200 p-4 flex flex-col items-center text-center hover:border-blue-300 hover:shadow-sm transition">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Daily</p>
                 <p className="text-2xl font-bold text-blue-600 mt-1">₩{vehicle.dailyRate.toLocaleString()}</p>
                 <p className="text-[11px] text-gray-400 mt-0.5">₩{vehicle.dailyRate.toLocaleString()}/day</p>
@@ -190,11 +191,11 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
                 return (
                   <div
                     key={pr.id}
-                    className={`rounded-xl border p-4 flex flex-col items-center text-center transition relative mb-3 sm:mb-0 ${
+                    className={`rounded-xl border p-4 flex flex-col items-center text-center transition relative ${
                       isBest
-                        ? "border-emerald-500 bg-emerald-50/60 shadow-sm sm:last:mr-0"
+                        ? "border-emerald-500 bg-emerald-50/60 shadow-sm"
                         : "border-gray-200 hover:border-blue-300 hover:shadow-sm"
-                    } ${!isBest ? "sm:mr-3" : ""}`}
+                    }`}
                   >
                     {isBest && (
                       <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-[10px] px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap">
