@@ -50,8 +50,8 @@ export default function HomePage() {
             International Driving Permit or let our professional drivers take you
             where you need to go.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <Link href="/booking" className="bg-white text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition shadow-xl">
+          <div className="flex flex-col sm:flex-row">
+            <Link href="/booking" className="bg-white text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition shadow-xl mb-3 sm:mb-0 sm:mr-4">
               Book Now
             </Link>
             <Link href="/vehicles" className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-white/10 transition">
@@ -60,19 +60,19 @@ export default function HomePage() {
           </div>
         </div>
 
-        <button onClick={prev} className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition">
+        <button onClick={prev} className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition">
           <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
         </button>
-        <button onClick={next} className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition">
+        <button onClick={next} className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition">
           <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
         </button>
 
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 sm:gap-3">
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all ${i === current ? "bg-white scale-110" : "bg-white/40"}`}
+              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ml-2 first:ml-0 transition-all ${i === current ? "bg-white scale-110" : "bg-white/40"}`}
             />
           ))}
         </div>
@@ -85,14 +85,14 @@ export default function HomePage() {
           <p className="text-gray-500 text-center mb-8 sm:mb-12 max-w-xl mx-auto text-sm sm:text-base">
             We deliver more than just a car. We deliver a complete travel experience across South Korea.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4">
             {[
               { icon: Car, title: "Modern Fleet", desc: "Well-maintained vehicles from top brands, regularly serviced for your safety." },
               { icon: MapPin, title: "Flexible Pickup", desc: "Pick up at our garage or use our convenient airport pick-up and drop-off service." },
               { icon: Shield, title: "Full Insurance", desc: "Comprehensive insurance coverage options for peace of mind during your trip." },
               { icon: Clock, title: "24/7 Support", desc: "WhatsApp and KakaoTalk support available around the clock." },
-            ].map((item) => (
-              <div key={item.title} className="text-center p-4 sm:p-6 rounded-2xl hover:shadow-lg transition border border-gray-100">
+            ].map((item, idx) => (
+              <div key={item.title} className={`text-center p-4 sm:p-6 rounded-2xl hover:shadow-lg transition border border-gray-100 ${idx % 2 === 0 ? "pr-2 sm:pr-6" : "pl-2 sm:pl-6"} ${idx < 2 ? "pb-4 sm:pb-6" : "pt-4 sm:pt-6"} md:pb-6 md:pt-6 md:pl-6 md:pr-6`}>
                 <item.icon className="h-8 w-8 sm:h-12 sm:w-12 text-blue-600 mx-auto mb-3 sm:mb-4" />
                 <h3 className="text-sm sm:text-lg font-semibold mb-1 sm:mb-2">{item.title}</h3>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
@@ -109,13 +109,13 @@ export default function HomePage() {
           <p className="text-gray-500 mb-8 sm:mb-12 max-w-xl mx-auto text-sm sm:text-base">
             From compact sedans to spacious SUVs, find the perfect ride for your Korean adventure.
           </p>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {[
               { type: "Sedan", image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600&q=80", desc: "Fuel-efficient and comfortable for city driving." },
               { type: "SUV", image: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600&q=80", desc: "Spacious and powerful for countryside trips." },
               { type: "Van", image: "https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=600&q=80", desc: "Perfect for group travel and family vacations." },
-            ].map((item) => (
-              <div key={item.type} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition group">
+            ].map((item, idx) => (
+              <div key={item.type} className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition group mb-4 sm:mb-8 md:mb-0 ${idx === 0 ? "sm:mr-4 md:mr-0" : ""} ${idx === 1 ? "sm:mx-2 md:mx-0" : ""} ${idx === 2 ? "sm:ml-4 md:ml-0" : ""}`}>
                 <div className="h-44 sm:h-52 overflow-hidden">
                   <img src={item.image} alt={item.type} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
@@ -139,8 +139,8 @@ export default function HomePage() {
           <p className="text-sm sm:text-lg text-blue-100 mb-6 sm:mb-8 max-w-2xl mx-auto">
             Browse our fleet or start your booking today. No payment gateway needed — pay via bank transfer after confirmation.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Link href="/booking" className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-blue-50 transition inline-block">
+          <div className="flex flex-col sm:flex-row justify-center">
+            <Link href="/booking" className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-blue-50 transition inline-block mb-3 sm:mb-0 sm:mr-4">
               Start Booking
             </Link>
             <Link href="/about" className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-white/10 transition inline-block">

@@ -32,9 +32,9 @@ export default function ContactPage() {
       {/* Contact Info + Form */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-5 gap-12">
+          <div className="grid md:grid-cols-5">
             {/* Info */}
-            <div className="md:col-span-2 space-y-8">
+            <div className="md:col-span-2 space-y-8 mr-12">
               <div>
                 <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
                 <p className="text-gray-600 mb-8 leading-relaxed">
@@ -49,8 +49,8 @@ export default function ContactPage() {
                   { icon: MapPin, label: "Office", value: "123 Gangnam-daero, Gangnam-gu", sub: "Seoul, South Korea" },
                   { icon: Clock, label: "Hours", value: "8:00 AM – 10:00 PM", sub: "Open 7 days a week" },
                 ].map((item) => (
-                  <div key={item.label} className="flex gap-4">
-                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div key={item.label} className="flex">
+                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
                       <item.icon className="h-5 w-5" />
                     </div>
                     <div>
@@ -63,8 +63,8 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-gray-50 p-6 rounded-2xl">
-                <div className="flex items-center gap-2 mb-3">
-                  <MessageCircle className="h-5 w-5 text-green-600" />
+                <div className="flex items-center mb-3">
+                  <MessageCircle className="h-5 w-5 text-green-600 mr-2" />
                   <p className="font-semibold">WhatsApp / KakaoTalk</p>
                 </div>
                 <p className="text-sm text-gray-600">
@@ -78,8 +78,8 @@ export default function ContactPage() {
               <div className="bg-gray-50 p-8 rounded-2xl">
                 <h3 className="text-xl font-bold mb-6">Send Us a Message</h3>
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
+                  <div className="grid md:grid-cols-2">
+                    <div className="mr-5 mb-5">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
                       <input
                         type="text"
@@ -131,9 +131,9 @@ export default function ContactPage() {
                   </div>
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-2"
+                    className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center"
                   >
-                    <Send className="h-4 w-4" />
+                    <Send className="h-4 w-4 mr-2" />
                     {sent ? "Message Sent!" : "Send Message"}
                   </button>
                 </form>

@@ -45,8 +45,8 @@ export default function LoginPage() {
             <div className="absolute top-1/2 left-1/3 w-20 h-20 border border-white rounded-full" />
           </div>
           <div className="relative">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="bg-white/20 rounded-xl p-3">
+            <div className="flex items-center mb-8">
+              <div className="bg-white/20 rounded-xl p-3 mr-3">
                 <Car className="h-8 w-8 text-white" />
               </div>
               <span className="text-2xl font-bold text-white">Hansol Car Rental</span>
@@ -58,12 +58,12 @@ export default function LoginPage() {
               Sign in to manage your bookings, explore our premium fleet, and enjoy seamless car rental experiences.
             </p>
           </div>
-          <div className="relative flex gap-6">
-            <div className="bg-white/10 rounded-xl px-5 py-3">
+          <div className="relative flex">
+            <div className="bg-white/10 rounded-xl px-5 py-3 mr-6">
               <p className="text-white font-bold text-xl">9+</p>
               <p className="text-blue-200 text-sm">Premium Vehicles</p>
             </div>
-            <div className="bg-white/10 rounded-xl px-5 py-3">
+            <div className="bg-white/10 rounded-xl px-5 py-3 mr-6">
               <p className="text-white font-bold text-xl">24/7</p>
               <p className="text-blue-200 text-sm">Support</p>
             </div>
@@ -77,8 +77,8 @@ export default function LoginPage() {
         {/* Right form panel */}
         <div className="w-full lg:w-1/2 bg-white p-8 sm:p-12">
           <div className="mb-8">
-            <div className="flex items-center gap-2 mb-6 lg:hidden">
-              <Car className="h-7 w-7 text-blue-600" />
+            <div className="flex items-center mb-6 lg:hidden">
+              <Car className="h-7 w-7 text-blue-600 mr-2" />
               <span className="text-lg font-bold text-gray-900">Hansol</span>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h1>
@@ -86,8 +86,8 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm flex items-center">
+              <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mr-2" />
               {error}
             </div>
           )}
@@ -129,12 +129,12 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 text-lg"
+              className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center text-lg"
             >
               {loading ? (
                 <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                <>Sign In <ArrowRight className="h-5 w-5" /></>
+                <><span className="mr-2">Sign In</span> <ArrowRight className="h-5 w-5" /></>
               )}
             </button>
           </form>

@@ -63,12 +63,12 @@ export default function VehiclesPage() {
     <div className="max-w-7xl mx-auto px-4 py-12">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Our Fleet</h1>
 
-      <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 sm:mb-8">
-        {["ALL", "Sedan", "SUV", "Van"].map((t) => (
+      <div className="flex flex-wrap mb-6 sm:mb-8">
+        {["ALL", "Sedan", "SUV", "Van"].map((t, idx) => (
           <button
             key={t}
             onClick={() => setFilter(t)}
-            className={`px-4 sm:px-5 py-2 rounded-lg font-medium text-sm transition ${
+            className={`px-4 sm:px-5 py-2 rounded-lg font-medium text-sm transition mr-2 mb-2 ${
               filter === t
                 ? "bg-blue-600 text-white"
                 : "bg-white text-gray-600 border border-gray-300 hover:border-blue-600"
@@ -84,12 +84,12 @@ export default function VehiclesPage() {
       ) : filtered.length === 0 ? (
         <p className="text-gray-500">No vehicles found.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {filtered.map((v) => (
             <div
               key={v.id}
               onClick={() => setSelectedVehicle(v)}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer"
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer mb-4 sm:mb-6"
             >
               <div className="h-44 sm:h-48 bg-gray-200 flex items-center justify-center">
                 {(() => {
@@ -112,10 +112,10 @@ export default function VehiclesPage() {
                   <h3 className="text-base sm:text-lg font-bold">{v.modelName}</h3>
                   {statusBadge(v.status)}
                 </div>
-                <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-500 mb-3">
-                  <span className="flex items-center gap-1"><Car className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {v.type}</span>
-                  <span className="flex items-center gap-1"><Settings2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {v.transmission}</span>
-                  <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {v.seatCount} seats</span>
+                <div className="flex items-center flex-wrap text-xs sm:text-sm text-gray-500 mb-3">
+                  <span className="flex items-center mr-3"><Car className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" /> {v.type}</span>
+                  <span className="flex items-center mr-3"><Settings2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" /> {v.transmission}</span>
+                  <span className="flex items-center"><Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" /> {v.seatCount} seats</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg sm:text-xl font-bold text-blue-600">₩{v.dailyRate.toLocaleString()}/day</p>

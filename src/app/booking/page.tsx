@@ -291,13 +291,13 @@ function BookingWizard() {
         {steps.map((s, i) => (
           <div key={i} className="flex items-center">
             <div
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition ${
+              className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition ${
                 step === i + 1 ? "bg-blue-600 text-white"
                   : step > i + 1 ? "bg-green-600 text-white"
                   : "bg-gray-200 text-gray-500"
               }`}
             >
-              {step > i + 1 ? <Check className="h-4 w-4" /> : <s.icon className="h-4 w-4" />}
+              {step > i + 1 ? <Check className="h-4 w-4 mr-2" /> : <s.icon className="h-4 w-4 mr-2" />}
               <span className="hidden sm:inline">{s.label}</span>
             </div>
             {i < steps.length - 1 && <ChevronRight className="h-5 w-5 text-gray-400 mx-1" />}
@@ -313,8 +313,8 @@ function BookingWizard() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Rental Type</label>
-              <div className="grid grid-cols-2 gap-3">
-                <button onClick={() => setRentalType("SELF_DRIVE")} className={`p-4 rounded-xl border-2 text-left transition ${rentalType === "SELF_DRIVE" ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
+              <div className="grid grid-cols-2">
+                <button onClick={() => setRentalType("SELF_DRIVE")} className={`p-4 rounded-xl border-2 text-left transition mr-3 ${rentalType === "SELF_DRIVE" ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
                   <p className="font-semibold">Self-Drive</p>
                   <p className="text-sm text-gray-500">You drive with IDP</p>
                 </button>
@@ -327,8 +327,8 @@ function BookingWizard() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Pickup Method</label>
-              <div className="grid grid-cols-2 gap-3">
-                <button onClick={() => setPickupType("GARAGE")} className={`p-4 rounded-xl border-2 text-left transition ${pickupType === "GARAGE" ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
+              <div className="grid grid-cols-2">
+                <button onClick={() => setPickupType("GARAGE")} className={`p-4 rounded-xl border-2 text-left transition mr-3 ${pickupType === "GARAGE" ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
                   <p className="font-semibold">Garage Collection</p>
                   <p className="text-sm text-gray-500">Pick up at our location</p>
                 </button>
@@ -340,12 +340,12 @@ function BookingWizard() {
             </div>
 
             {pickupType === "SERVICE" && (
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
+              <div className="grid md:grid-cols-2">
+                <div className="mb-4 mr-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Pickup Location</label>
                   <input type="text" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Incheon Airport T1" />
                 </div>
-                <div>
+                <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Drop-off Location</label>
                   <input type="text" value={dropoffLocation} onChange={(e) => setDropoffLocation(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Gimpo Airport" />
                 </div>
@@ -356,8 +356,8 @@ function BookingWizard() {
               </div>
             )}
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
+            <div className="grid md:grid-cols-2">
+              <div className="mr-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Pickup Date & Time</label>
                 <input type="datetime-local" value={pickupDatetime} onChange={(e) => setPickupDatetime(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" />
               </div>
@@ -383,8 +383,8 @@ function BookingWizard() {
             <div className="space-y-3">
               {accessories.map((acc, i) => (
                 <label key={acc.name} className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition ${acc.checked ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
-                  <div className="flex items-center gap-3">
-                    <input type="checkbox" checked={acc.checked} onChange={() => toggleAccessory(i)} className="h-5 w-5 text-blue-600 rounded" />
+                  <div className="flex items-center">
+                    <input type="checkbox" checked={acc.checked} onChange={() => toggleAccessory(i)} className="h-5 w-5 text-blue-600 rounded mr-3" />
                     <span className="font-medium">{acc.name}</span>
                   </div>
                   <span className="text-gray-600">+₩{acc.price.toLocaleString()}/rental</span>
@@ -407,10 +407,10 @@ function BookingWizard() {
             </div>
 
             {!selectedVehicle && (
-              <div className="grid gap-4">
+              <div className="grid">
                 {vehicles.map((v) => (
-                  <button key={v.id} onClick={() => setSelectedVehicle(v.id)} className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition ${selectedVehicle === v.id ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
-                    <div className="w-20 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <button key={v.id} onClick={() => setSelectedVehicle(v.id)} className={`flex items-center p-4 rounded-xl border-2 text-left transition mb-4 last:mb-0 ${selectedVehicle === v.id ? "border-blue-600 bg-blue-50" : "border-gray-200 hover:border-gray-400"}`}>
+                    <div className="w-20 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
                       {getVehicleThumb(v) ? (
                         <img src={getVehicleThumb(v)!} alt={v.modelName} className="w-full h-full object-cover rounded-lg" />
                       ) : (
@@ -439,15 +439,15 @@ function BookingWizard() {
 
             {selectedVehicle && selectedV && (
               <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-20 h-16 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center p-4 bg-gray-50 rounded-xl">
+                  <div className="w-20 h-16 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
                     {getVehicleThumb(selectedV) ? (
                       <img src={getVehicleThumb(selectedV)!} alt={selectedV.modelName} className="w-full h-full object-cover rounded-lg" />
                     ) : (
                       <Car className="h-8 w-8 text-gray-400" />
                     )}
                   </div>
-                  <div>
+                  <div className="mr-4">
                     <p className="font-bold">{selectedV.modelName}</p>
                     <p className="text-sm text-gray-500">{selectedV.type} · {selectedV.transmission} · {selectedV.seatCount} seats</p>
                   </div>
@@ -559,7 +559,7 @@ function BookingWizard() {
             {selectedV && (
               <div className="bg-gray-50 rounded-xl p-5 mb-6">
                 <h3 className="font-semibold mb-3">Booking Summary</h3>
-                <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="grid grid-cols-2 text-sm">
                   <p className="text-gray-500">Vehicle:</p>
                   <p className="font-medium">{selectedV.modelName}</p>
                   <p className="text-gray-500">Package:</p>
@@ -587,16 +587,16 @@ function BookingWizard() {
             {!session?.user && (
               <div className="space-y-4">
                 <h3 className="font-semibold">Your Information</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
+                <div className="grid md:grid-cols-2">
+                  <div className="mb-4 mr-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                     <input type="text" value={guestName} onChange={(e) => setGuestName(e.target.value)} required className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" />
                   </div>
-                  <div>
+                  <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                     <input type="email" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} required className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" />
                   </div>
-                  <div>
+                  <div className="mb-4 mr-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
                     <input type="tel" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} required className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" />
                   </div>
@@ -611,7 +611,7 @@ function BookingWizard() {
             {session?.user && (
               <div className="space-y-4">
                 <h3 className="font-semibold">Contact Information</h3>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp / KakaoTalk ID</label>
                     <input type="text" value={guestWhatsapp} onChange={(e) => setGuestWhatsapp(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" />
@@ -622,8 +622,8 @@ function BookingWizard() {
 
             {rentalType === "SELF_DRIVE" && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" checked={hasIdp} onChange={(e) => setHasIdp(e.target.checked)} className="h-5 w-5 text-blue-600 rounded mt-0.5" />
+                <label className="flex items-start cursor-pointer">
+                  <input type="checkbox" checked={hasIdp} onChange={(e) => setHasIdp(e.target.checked)} className="h-5 w-5 text-blue-600 rounded mt-0.5 mr-3" />
                   <div>
                     <p className="font-semibold text-amber-800">International Driving Permit (IDP) Required</p>
                     <p className="text-sm text-amber-700 mt-1">
@@ -638,8 +638,8 @@ function BookingWizard() {
 
         <div className="flex justify-between mt-8 pt-6 border-t">
           {step > 1 ? (
-            <button onClick={() => setStep(step - 1)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium">
-              <ChevronLeft className="h-5 w-5" /> Back
+            <button onClick={() => setStep(step - 1)} className="flex items-center text-gray-600 hover:text-gray-900 font-medium">
+              <ChevronLeft className="h-5 w-5 mr-2" /> Back
             </button>
           ) : (
             <div />
@@ -649,9 +649,9 @@ function BookingWizard() {
             <button
               onClick={() => setStep(step + 1)}
               disabled={(step === 1 && (!pickupDatetime || !dropoffDatetime)) || (step === 3 && !selectedVehicle)}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
             >
-              Next <ChevronRight className="h-5 w-5" />
+              Next <ChevronRight className="h-5 w-5 ml-2" />
             </button>
           ) : (
             <button
@@ -677,8 +677,8 @@ function BookingWizard() {
             </div>
 
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div className="flex items-start">
+                <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0 mr-3" />
                 <div>
                   <p className="font-semibold text-amber-800">Package requires {extendSuggestion.newTotal} days</p>
                   <p className="text-sm text-amber-700 mt-1">
@@ -704,10 +704,10 @@ function BookingWizard() {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex">
               <button
                 onClick={handleExtendDates}
-                className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+                className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition mr-3"
               >
                 Extend & Book Package
               </button>
