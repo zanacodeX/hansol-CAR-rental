@@ -30,11 +30,11 @@ export default function Navbar() {
   const isAdmin = session?.user && (session.user as { role: string }).role === "ADMIN";
 
   const navBg = isTransparent
-    ? "bg-transparent"
-    : "bg-white/95 backdrop-blur-sm shadow-md";
+    ? "bg-black/30 backdrop-blur-sm"
+    : "bg-white shadow-md";
 
   const textColor = isTransparent ? "text-white" : "text-gray-900";
-  const linkColor = isTransparent ? "text-white/80 hover:text-white" : "text-gray-600 hover:text-blue-600";
+  const linkColor = isTransparent ? "text-white/90 hover:text-white" : "text-gray-600 hover:text-blue-600";
   const brandColor = isTransparent ? "text-white" : "text-gray-900";
   const iconColor = isTransparent ? "text-white" : "text-blue-600";
 
@@ -95,7 +95,7 @@ export default function Navbar() {
                         {session.user.name}
                       </span>
                       {isAdmin && (
-                        <span className="text-[10px] text-blue-400 font-semibold leading-tight flex items-center gap-0.5">
+                        <span className="text-[10px] text-blue-300 font-semibold leading-tight flex items-center gap-0.5">
                           <Shield className="h-2.5 w-2.5" /> Admin
                         </span>
                       )}
@@ -132,7 +132,7 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className={`md:hidden border-t shadow-lg ${isTransparent ? "bg-gray-900/90 backdrop-blur-sm" : "bg-white"}`}>
+        <div className={`md:hidden border-t shadow-lg ${isTransparent ? "bg-black/60 backdrop-blur-sm" : "bg-white"}`}>
           <div className="px-4 py-3 space-y-3">
             <Link href="/" className={`block font-medium ${isTransparent ? "text-white" : "text-gray-600 hover:text-blue-600"}`} onClick={() => setMenuOpen(false)}>
               Home
