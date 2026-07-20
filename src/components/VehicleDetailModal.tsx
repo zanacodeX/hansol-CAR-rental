@@ -79,9 +79,9 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
   const nextPhoto = () => setPhotoIdx((i) => (i === photos.length - 1 ? 0 : i + 1));
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[60] p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl"
+        className="bg-white rounded-2xl max-w-3xl w-full max-h-[88vh] sm:max-h-[92vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Photo gallery */}
@@ -133,7 +133,7 @@ export default function VehicleDetailModal({ vehicle, onClose }: Props) {
           <div className="absolute top-3 left-3">{statusBadge()}</div>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="mb-4">
             <h2 className="text-2xl font-bold text-gray-900">{vehicle.modelName}</h2>
