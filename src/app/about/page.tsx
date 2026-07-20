@@ -12,7 +12,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1920&q=60" alt="" className="w-full h-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1200&q=70" alt="" loading="lazy" className="w-full h-full object-cover" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6">About Hansol</h1>
@@ -40,7 +40,7 @@ export default function AboutPage() {
             </div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=700&q=80"
+                src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=600&q=75"
                 alt="Hansol Car Rental office"
                 className="rounded-2xl shadow-xl w-full"
               />

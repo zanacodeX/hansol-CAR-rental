@@ -6,23 +6,23 @@ import { Car, MapPin, Shield, Clock, ChevronLeft, ChevronRight } from "lucide-re
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1200&q=75",
     alt: "Scenic drive through South Korea",
   },
   {
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=75",
     alt: "Luxury sedan on the road",
   },
   {
-    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=75",
     alt: "Premium white car",
   },
   {
-    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1200&q=75",
     alt: "Sports car fleet",
   },
   {
-    image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=1200&q=75",
     alt: "Modern SUV lineup",
   },
 ];
@@ -56,7 +56,9 @@ export default function HomePage() {
             key={i}
             className={`absolute inset-0 transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
-            <img src={slide.image} alt={slide.alt} className="w-full h-full object-cover" />
+            {Math.abs(i - current) <= 1 && (
+              <img src={slide.image} alt={slide.alt} loading={i === 0 ? "eager" : "lazy"} className="w-full h-full object-cover" />
+            )}
           </div>
         ))}
 
@@ -151,7 +153,7 @@ export default function HomePage() {
             ].map((item) => (
               <div key={item.type} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition group">
                 <div className="h-52 overflow-hidden">
-                  <img src={item.image} alt={item.type} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                  <img src={item.image} alt={item.type} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{item.type}</h3>

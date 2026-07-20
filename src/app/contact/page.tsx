@@ -19,7 +19,7 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=60" alt="" className="w-full h-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&q=70" alt="" loading="lazy" className="w-full h-full object-cover" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6">Contact Us</h1>
