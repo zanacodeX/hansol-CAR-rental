@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx prisma generate && npm run build",
+  "buildCommand": "DATABASE_URL=mysql://placeholder:placeholder@localhost:3306/placeholder npx prisma generate && npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "npm install"
