@@ -32,7 +32,7 @@ model Vehicle {
   status        VehicleStatus @default(AVAILABLE)
   dailyRate     Float
   imageUrl      String?
-  photos        String?       @db.Text
+  photos        String?       @db.MediumText
   seatCount     Int           @default(5)
   description   String?
   features      String?

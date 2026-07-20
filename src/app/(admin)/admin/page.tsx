@@ -595,22 +595,40 @@ export default function AdminPage() {
                   onChange={async (e) => {
                     const files = e.target.files;
                     if (!files || files.length === 0) return;
-                    const fd = new FormData();
-                    for (let i = 0; i < files.length; i++) fd.append("files", files[i]);
-                    try {
-                      const res = await fetch("/api/upload", { method: "POST", body: fd });
-                      const data = await res.json();
-                      if (data.urls) {
-                        const existing = JSON.parse(vehicleForm.photos || "[]");
-                        setVehicleForm({ ...vehicleForm, photos: JSON.stringify([...existing, ...data.urls]) });
-                      } else if (data.error) {
-                        alert(data.error + ". Use image URLs instead.");
-                      }
-                    } catch { alert("Upload failed. Use image URLs instead."); }
+                    const resizeImage = (file: File): Promise<string> =>
+                      new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                          const img = new Image();
+                          img.onload = () => {
+                            const canvas = document.createElement("canvas");
+                            const MAX = 800;
+                            let w = img.width;
+                            let h = img.height;
+                            if (w > MAX || h > MAX) {
+                              if (w > h) { h = Math.round((h * MAX) / w); w = MAX; }
+                              else { w = Math.round((w * MAX) / h); h = MAX; }
+                            }
+                            canvas.width = w;
+                            canvas.height = h;
+                            canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
+                            resolve(canvas.toDataURL("image/jpeg", 0.7));
+                          };
+                          img.src = ev.target?.result as string;
+                        };
+                        reader.readAsDataURL(file);
+                      });
+                    const existing = JSON.parse(vehicleForm.photos || "[]");
+                    const newPhotos: string[] = [];
+                    for (let i = 0; i < files.length; i++) {
+                      const dataUrl = await resizeImage(files[i]);
+                      newPhotos.push(dataUrl);
+                    }
+                    setVehicleForm({ ...vehicleForm, photos: JSON.stringify([...existing, ...newPhotos]) });
+                    e.target.value = "";
                   }}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                 />
-                <p className="text-xs text-gray-400 mt-1">Paste image URL or upload file (requires Cloudinary)</p>
                 {(() => {
                   const photos: string[] = JSON.parse(vehicleForm.photos || "[]");
                   if (photos.length === 0) return null;
