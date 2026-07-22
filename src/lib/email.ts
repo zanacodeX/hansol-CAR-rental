@@ -24,16 +24,18 @@ async function sendViaWeb3Forms(to: string, subject: string, htmlBody: string) {
         access_key: WEB3FORMS_KEY,
         to_email: to,
         subject: subject,
-        html: htmlBody,
+        message: htmlBody,
         from_name: "Hansol Car Rental",
+        botcheck: "",
       }),
     });
     const data = await res.json();
+    console.log("[Email] Web3Forms response:", JSON.stringify(data));
     if (data.success) {
       console.log("[Email] Web3Forms email sent to:", to);
       return true;
     } else {
-      console.error("[Email] Web3Forms failed:", data);
+      console.error("[Email] Web3Forms failed:", JSON.stringify(data));
       return false;
     }
   } catch (e) {
