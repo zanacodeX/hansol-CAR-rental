@@ -29,6 +29,8 @@ export async function PUT(
       data: { status },
       include: {
         vehicle: true,
+        accessories: true,
+        selectedPackage: true,
         user: { select: { name: true, email: true } },
       },
     });
