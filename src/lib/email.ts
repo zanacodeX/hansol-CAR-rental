@@ -8,7 +8,9 @@ type BookingEmailData = {
   id: string;
   guestName?: string | null;
   guestEmail?: string | null;
-  user?: { name: string; email: string } | null;
+  guestPhone?: string | null;
+  guestWhatsappId?: string | null;
+  user?: { name: string; email: string; phone?: string | null } | null;
   vehicle: { modelName: string; type: string };
   pickupDatetime: Date;
   dropoffDatetime: Date;
@@ -16,8 +18,11 @@ type BookingEmailData = {
   pickupType: string;
   pickupLocation?: string | null;
   dropoffLocation?: string | null;
+  flightNumber?: string | null;
+  hasIdp?: boolean;
   totalEstimatedPrice: number;
-  accessories: { name: string }[];
+  selectedPackage?: { name: string; durationDays: number } | null;
+  accessories: { name: string; price?: number }[];
 };
 
 export async function sendBookingRequestEmail(booking: BookingEmailData) {
@@ -68,11 +73,24 @@ export async function sendBookingRequestEmail(booking: BookingEmailData) {
       <div style="background:#fffbeb;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #f59e0b;">
         <h3 style="margin-top:0;">Booking #${ref}</h3>
         <p><strong>Customer:</strong> ${customerName} (${customerEmail})</p>
+        ${booking.guestPhone ? `<p><strong>Phone:</strong> ${booking.guestPhone}</p>` : ""}
+        ${booking.guestWhatsappId ? `<p><strong>WhatsApp/KakaoTalk:</strong> ${booking.guestWhatsappId}</p>` : ""}
+        ${booking.user?.phone ? `<p><strong>Phone:</strong> ${booking.user.phone}</p>` : ""}
+        <p><strong>IDP:</strong> ${booking.hasIdp ? "Yes" : "No"}</p>
+        <hr style="border:none;border-top:1px solid #f59e0b;margin:12px 0;" />
         <p><strong>Vehicle:</strong> ${booking.vehicle.modelName} (${booking.vehicle.type})</p>
         <p><strong>Rental Type:</strong> ${booking.rentalType === "SELF_DRIVE" ? "Self-Drive" : "With Driver"}</p>
+        ${booking.selectedPackage ? `<p><strong>Package:</strong> ${booking.selectedPackage.name} (${booking.selectedPackage.durationDays} days)</p>` : ""}
+        <hr style="border:none;border-top:1px solid #f59e0b;margin:12px 0;" />
         <p><strong>Pickup:</strong> ${fmt(booking.pickupDatetime)}</p>
         <p><strong>Drop-off:</strong> ${fmt(booking.dropoffDatetime)}</p>
-        <p><strong>Estimated Total:</strong> ₩${booking.totalEstimatedPrice.toLocaleString()}</p>
+        <p><strong>Pickup Method:</strong> ${booking.pickupType === "GARAGE" ? "Garage Pickup" : "Service (delivery/return)"}</p>
+        ${booking.pickupLocation ? `<p><strong>Pickup Location:</strong> ${booking.pickupLocation}</p>` : ""}
+        ${booking.dropoffLocation ? `<p><strong>Drop-off Location:</strong> ${booking.dropoffLocation}</p>` : ""}
+        ${booking.flightNumber ? `<p><strong>Flight Number:</strong> ${booking.flightNumber}</p>` : ""}
+        ${booking.accessories.length > 0 ? `<p><strong>Accessories:</strong> ${booking.accessories.map((a) => `${a.name} (+₩${(a.price || 0).toLocaleString()})`).join(", ")}</p>` : ""}
+        <hr style="border:none;border-top:1px solid #f59e0b;margin:12px 0;" />
+        <p style="font-size:18px;"><strong>Estimated Total:</strong> ₩${booking.totalEstimatedPrice.toLocaleString()}</p>
       </div>
       <p>Please review and confirm or cancel this booking from the admin dashboard.</p>
     </div>`,

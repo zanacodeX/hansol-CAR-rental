@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
         vehicle: true,
         accessories: true,
         selectedPackage: true,
-        user: { select: { name: true, email: true } },
+        user: { select: { name: true, email: true, phone: true } },
       },
     });
 
