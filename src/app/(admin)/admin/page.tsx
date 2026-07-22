@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Shield, CheckCircle, XCircle, Clock, Car, Calendar, User, Plus, Pencil, Trash2, X, Package, LayoutDashboard, Settings } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Clock, Car, Calendar, User, Plus, Pencil, Trash2, X, Package, LayoutDashboard, Settings, Eye, Phone, MessageCircle, MapPin, Check } from "lucide-react";
 
 type Booking = {
   id: string;
@@ -19,10 +19,12 @@ type Booking = {
   selectedPackage: { name: string; durationDays: number } | null;
   guestName: string | null;
   guestEmail: string | null;
+  guestPhone: string | null;
+  guestWhatsappId: string | null;
   hasIdp: boolean;
   createdAt: string;
   vehicle: { modelName: string; type: string };
-  accessories: { name: string }[];
+  accessories: { name: string; price: number }[];
   user: { name: string; email: string; phone: string | null } | null;
 };
 
@@ -97,6 +99,7 @@ export default function AdminPage() {
   const [newPkgPrice, setNewPkgPrice] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login");
@@ -369,6 +372,10 @@ export default function AdminPage() {
                       </div>
                       {b.status === "PENDING" ? (
                         <div className="flex lg:flex-col gap-2">
+                          <button onClick={() => setSelectedBooking(b)} className="flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2.5 rounded-lg font-medium hover:bg-blue-200 transition">
+                            <Eye className="h-4 w-4" />
+                            View Details
+                          </button>
                           <button onClick={() => handleBookingAction(b.id, "CONFIRMED")} disabled={actionLoading === b.id} className="flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition">
                             <CheckCircle className="h-4 w-4" />
                             {actionLoading === b.id ? "..." : "Confirm"}
@@ -379,9 +386,15 @@ export default function AdminPage() {
                           </button>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 text-gray-400">
-                          <Clock className="h-4 w-4" />
-                          <span className="text-sm">{b.status === "CONFIRMED" ? "Confirmed" : "Cancelled"}</span>
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => setSelectedBooking(b)} className="flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition">
+                            <Eye className="h-4 w-4" />
+                            View Details
+                          </button>
+                          <div className="flex items-center gap-2 text-gray-400">
+                            <Clock className="h-4 w-4" />
+                            <span className="text-sm">{b.status === "CONFIRMED" ? "Confirmed" : "Cancelled"}</span>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -776,6 +789,158 @@ export default function AdminPage() {
           </div>
         </div>
       )}
+
+      {/* ═══════════ BOOKING DETAIL MODAL ═══════════ */}
+      {selectedBooking && (() => {
+        const b = selectedBooking;
+        const customerName = b.user?.name || b.guestName || "Guest";
+        const customerEmail = b.user?.email || b.guestEmail || "N/A";
+        const customerPhone = b.user?.phone || b.guestPhone || null;
+        const whatsappId = b.guestWhatsappId || null;
+        return (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4" onClick={() => setSelectedBooking(null)}>
+            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              {/* Header */}
+              <div className="flex justify-between items-center p-6 border-b border-gray-100">
+                <div>
+                  <h2 className="text-xl font-bold">Booking #{b.id.slice(-8).toUpperCase()}</h2>
+                  <span className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-semibold ${b.status === "PENDING" ? "bg-amber-100 text-amber-800" : b.status === "CONFIRMED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                    {b.status}
+                  </span>
+                </div>
+                <button onClick={() => setSelectedBooking(null)} className="p-2 hover:bg-gray-100 rounded-lg transition">
+                  <X className="h-5 w-5 text-gray-400" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-5">
+                {/* Customer Info */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Customer Information</h3>
+                  <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+                    <div className="flex items-center text-sm">
+                      <User className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                      <span className="font-medium text-gray-900">{customerName}</span>
+                      {b.user ? (
+                        <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-semibold rounded-full">Registered</span>
+                      ) : (
+                        <span className="ml-2 px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-semibold rounded-full">Walk-in</span>
+                      )}
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <span className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                      <span className="text-gray-600">{customerEmail}</span>
+                    </div>
+                    {customerPhone && (
+                      <div className="flex items-center text-sm">
+                        <Phone className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                        <span className="text-gray-600">{customerPhone}</span>
+                      </div>
+                    )}
+                    {whatsappId && (
+                      <div className="flex items-center text-sm">
+                        <MessageCircle className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                        <span className="text-gray-600">{whatsappId}</span>
+                      </div>
+                    )}
+                    {b.hasIdp && (
+                      <div className="flex items-center text-sm">
+                        <Check className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
+                        <span className="text-gray-600">Has International Driving Permit</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Vehicle & Rental */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Vehicle & Rental</h3>
+                  <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+                    <div className="flex items-center text-sm">
+                      <Car className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                      <span className="text-gray-600">{b.vehicle.modelName} ({b.vehicle.type})</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Calendar className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                      <span className="text-gray-600">
+                        {new Date(b.pickupDatetime).toLocaleDateString()} — {new Date(b.dropoffDatetime).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <span className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                      <span className="text-gray-600">{b.rentalType === "SELF_DRIVE" ? "Self-Drive" : "With Driver"} · {b.pickupType === "GARAGE" ? "Garage Pickup" : "Service Pick-up/Drop-off"}</span>
+                    </div>
+                    {b.flightNumber && (
+                      <div className="flex items-center text-sm">
+                        <span className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                        <span className="text-gray-600">Flight: {b.flightNumber}</span>
+                      </div>
+                    )}
+                    {(b.pickupLocation || b.dropoffLocation) && (
+                      <div className="flex items-start text-sm">
+                        <MapPin className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0 mt-0.5" />
+                        <div>
+                          {b.pickupLocation && <p className="text-gray-600">Pickup: {b.pickupLocation}</p>}
+                          {b.dropoffLocation && <p className="text-gray-600">Dropoff: {b.dropoffLocation}</p>}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Package & Extras */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Package & Extras</h3>
+                  <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+                    {b.selectedPackage ? (
+                      <div className="text-sm text-gray-600">
+                        <span className="font-medium">{b.selectedPackage.name}</span> ({b.selectedPackage.durationDays} days)
+                      </div>
+                    ) : (
+                      <div className="text-sm text-gray-600">Daily rate</div>
+                    )}
+                    {b.accessories.length > 0 ? (
+                      <div className="flex flex-wrap">
+                        {b.accessories.map((a, i) => (
+                          <span key={i} className="bg-white border border-gray-200 text-gray-600 px-2.5 py-1 rounded-lg text-xs mr-2 mb-2">
+                            {a.name} {a.price > 0 && `(+₩${a.price.toLocaleString()})`}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-400">No extras</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="bg-blue-50 rounded-xl p-4 flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-600">Estimated Total</span>
+                  <span className="text-2xl font-bold text-blue-600">₩{b.totalEstimatedPrice.toLocaleString()}</span>
+                </div>
+
+                {/* Actions */}
+                {b.status === "PENDING" && (
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={() => { handleBookingAction(b.id, "CONFIRMED"); setSelectedBooking(null); }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+                    >
+                      <CheckCircle className="h-4 w-4" /> Confirm Booking
+                    </button>
+                    <button
+                      onClick={() => { handleBookingAction(b.id, "CANCELLED"); setSelectedBooking(null); }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition"
+                    >
+                      <XCircle className="h-4 w-4" /> Cancel Booking
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
