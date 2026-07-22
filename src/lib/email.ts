@@ -1,48 +1,15 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-function getResend() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key || key === "re_your_resend_api_key_here") {
-    console.warn("[Email] RESEND_API_KEY is not configured");
-  }
-  return new Resend(key || "re_placeholder");
-}
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER || "nenasadtv@gmail.com",
+    pass: process.env.GMAIL_APP_PASSWORD || "",
+  },
+});
 
-const EMAIL_FROM = process.env.EMAIL_FROM || "Hansol Car Rental <noreply@hansolcarrental.com>";
-const WEB3FORMS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
-
-async function sendViaWeb3Forms(to: string, subject: string, htmlBody: string) {
-  if (!WEB3FORMS_KEY) {
-    console.warn("[Email] WEB3FORMS_ACCESS_KEY not set, cannot send to customer");
-    return false;
-  }
-  try {
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        to_email: to,
-        subject: subject,
-        message: htmlBody,
-        from_name: "Hansol Car Rental",
-        botcheck: "",
-      }),
-    });
-    const data = await res.json();
-    console.log("[Email] Web3Forms response:", JSON.stringify(data));
-    if (data.success) {
-      console.log("[Email] Web3Forms email sent to:", to);
-      return true;
-    } else {
-      console.error("[Email] Web3Forms failed:", JSON.stringify(data));
-      return false;
-    }
-  } catch (e) {
-    console.error("[Email] Web3Forms error:", e);
-    return false;
-  }
-}
+const EMAIL_FROM_NAME = "Hansol Car Rental";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "nenasadtv@gmail.com";
 
 type BookingEmailData = {
   id: string;
@@ -66,6 +33,31 @@ type BookingEmailData = {
   accessories: { name: string; price?: number }[];
 };
 
+const fmt = (d: Date) =>
+  new Date(d).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+async function sendEmail(to: string, subject: string, html: string) {
+  try {
+    const info = await transporter.sendMail({
+      from: `"${EMAIL_FROM_NAME}" <${process.env.GMAIL_USER || "nenasadtv@gmail.com"}>`,
+      to,
+      subject,
+      html,
+    });
+    console.log("[Email] Sent to:", to, "MessageId:", info.messageId);
+    return true;
+  } catch (e) {
+    console.error("[Email] Failed to send to:", to, e);
+    return false;
+  }
+}
+
 export async function sendBookingRequestEmail(booking: BookingEmailData) {
   const customerName = booking.guestName || booking.user?.name || "Customer";
   const customerEmail = booking.guestEmail || booking.user?.email;
@@ -74,7 +66,6 @@ export async function sendBookingRequestEmail(booking: BookingEmailData) {
     return;
   }
 
-  const fmt = (d: Date) => new Date(d).toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
   const ref = booking.id.slice(-8).toUpperCase();
   const createdAtStr = booking.createdAt ? fmt(booking.createdAt) : "N/A";
 
@@ -128,21 +119,11 @@ export async function sendBookingRequestEmail(booking: BookingEmailData) {
     <p>Please review and confirm or cancel this booking from the admin dashboard.</p>
   </div>`;
 
-  // Send to customer via Web3Forms (works to any email)
-  await sendViaWeb3Forms(customerEmail, `Booking Request Received - #${ref}`, customerHtml);
+  // Send to customer
+  await sendEmail(customerEmail, `Booking Request Received - #${ref}`, customerHtml);
 
-  // Send to admin via Resend (works because it's your own email)
-  try {
-    const result = await getResend().emails.send({
-      from: EMAIL_FROM,
-      to: process.env.ADMIN_EMAIL || "nenasadtv@gmail.com",
-      subject: `New Booking Request - #${ref}`,
-      html: adminHtml,
-    });
-    console.log("[Email] Admin booking request email sent:", result.data?.id);
-  } catch (e) {
-    console.error("[Email] Failed to send admin email:", e);
-  }
+  // Send to admin
+  await sendEmail(ADMIN_EMAIL, `New Booking Request - #${ref}`, adminHtml);
 }
 
 export async function sendBookingConfirmedEmail(booking: {
@@ -162,7 +143,6 @@ export async function sendBookingConfirmedEmail(booking: {
   if (!customerEmail) return;
 
   const ref = booking.id.slice(-8).toUpperCase();
-  const fmt = (d: Date) => new Date(d).toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
   const confirmedStr = booking.confirmedAt ? fmt(booking.confirmedAt) : fmt(new Date());
 
   const html = `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
@@ -189,7 +169,7 @@ export async function sendBookingConfirmedEmail(booking: {
     <p style="color:#718096;">Hansol Car Rental Team</p>
   </div>`;
 
-  await sendViaWeb3Forms(customerEmail, `Booking Confirmed - #${ref}`, html);
+  await sendEmail(customerEmail, `Booking Confirmed - #${ref}`, html);
 }
 
 export async function sendBookingCancelledEmail(booking: {
@@ -214,5 +194,5 @@ export async function sendBookingCancelledEmail(booking: {
     <p style="color:#718096;">Hansol Car Rental Team</p>
   </div>`;
 
-  await sendViaWeb3Forms(customerEmail, `Booking Unavailable - #${ref}`, html);
+  await sendEmail(customerEmail, `Booking Unavailable - #${ref}`, html);
 }
