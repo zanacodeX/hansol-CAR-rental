@@ -26,7 +26,10 @@ export async function PUT(
 
     const booking = await prisma.booking.update({
       where: { id },
-      data: { status },
+      data: {
+        status,
+        ...(status === "CONFIRMED" ? { confirmedAt: new Date() } : {}),
+      },
       include: {
         vehicle: true,
         accessories: true,

@@ -23,6 +23,7 @@ type Booking = {
   guestWhatsappId: string | null;
   hasIdp: boolean;
   createdAt: string;
+  confirmedAt: string | null;
   vehicle: { modelName: string; type: string };
   accessories: { name: string; price: number }[];
   user: { name: string; email: string; phone: string | null } | null;
@@ -367,6 +368,10 @@ export default function AdminPage() {
                           {b.accessories.length > 0 && (
                             <div className="text-gray-500 md:col-span-2">Extras: {b.accessories.map((a) => a.name).join(", ")}</div>
                           )}
+                          <div className="flex flex-wrap gap-4 text-xs text-gray-400 mt-1 md:col-span-2">
+                            <span>Booked: {new Date(b.createdAt).toLocaleString()}</span>
+                            {b.confirmedAt && <span className="text-green-600">Confirmed: {new Date(b.confirmedAt).toLocaleString()}</span>}
+                          </div>
                         </div>
                         <p className="text-xl font-bold text-blue-600 mt-3">₩{b.totalEstimatedPrice.toLocaleString()}</p>
                       </div>
@@ -807,6 +812,10 @@ export default function AdminPage() {
                   <span className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-semibold ${b.status === "PENDING" ? "bg-amber-100 text-amber-800" : b.status === "CONFIRMED" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                     {b.status}
                   </span>
+                  <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-400">
+                    <span>Booked: {new Date(b.createdAt).toLocaleString()}</span>
+                    {b.confirmedAt && <span className="text-green-600 font-medium">Confirmed: {new Date(b.confirmedAt).toLocaleString()}</span>}
+                  </div>
                 </div>
                 <button onClick={() => setSelectedBooking(null)} className="p-2 hover:bg-gray-100 rounded-lg transition">
                   <X className="h-5 w-5 text-gray-400" />

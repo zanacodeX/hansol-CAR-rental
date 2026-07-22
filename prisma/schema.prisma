@@ -97,6 +97,7 @@ model Booking {
   status              BookingStatus @default(PENDING)
   totalEstimatedPrice Float
   createdAt           DateTime      @default(now())
+  confirmedAt         DateTime?
   accessories         Accessory[]
 }
 

@@ -38,6 +38,7 @@ type Booking = {
   guestWhatsappId: string | null;
   hasIdp: boolean;
   createdAt: string;
+  confirmedAt: string | null;
   vehicle: { modelName: string; type: string };
   accessories: { name: string; price: number }[];
   user: { name: string; email: string; phone: string | null } | null;
@@ -255,6 +256,10 @@ export default function DashboardPage() {
                       </span>
                     )}
                   </div>
+                  <div className="flex flex-wrap gap-3 text-xs text-gray-400 mt-1.5">
+                    <span>Booked: {new Date(b.createdAt).toLocaleString()}</span>
+                    {b.confirmedAt && <span className="text-green-600 font-medium">Confirmed: {new Date(b.confirmedAt).toLocaleString()}</span>}
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
@@ -319,6 +324,10 @@ export default function DashboardPage() {
                     >
                       {b.status}
                     </span>
+                    <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-400">
+                      <span>Booked: {new Date(b.createdAt).toLocaleString()}</span>
+                      {b.confirmedAt && <span className="text-green-600 font-medium">Confirmed: {new Date(b.confirmedAt).toLocaleString()}</span>}
+                    </div>
                   </div>
                   <button
                     onClick={() => setSelectedBooking(null)}

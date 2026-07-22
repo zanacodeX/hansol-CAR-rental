@@ -120,6 +120,7 @@ export async function sendBookingRequestEmail(booking: BookingEmailData) {
 export async function sendBookingConfirmedEmail(booking: {
   id: string;
   createdAt?: Date;
+  confirmedAt?: Date | null;
   guestName?: string | null;
   guestEmail?: string | null;
   user?: { name: string; email: string } | null;
@@ -134,6 +135,7 @@ export async function sendBookingConfirmedEmail(booking: {
 
   const ref = booking.id.slice(-8).toUpperCase();
   const fmt = (d: Date) => new Date(d).toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  const confirmedStr = booking.confirmedAt ? fmt(booking.confirmedAt) : fmt(new Date());
 
   try {
     await getResend().emails.send({
@@ -146,6 +148,8 @@ export async function sendBookingConfirmedEmail(booking: {
         <p>Your booking has been confirmed. Please proceed with manual payment as instructed below.</p>
         <div style="background:#f0fdf4;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #059669;">
           <h3 style="margin-top:0;">Booking #${ref}</h3>
+          ${booking.createdAt ? `<p><strong>Booked on:</strong> ${fmt(booking.createdAt)}</p>` : ""}
+          <p><strong>Confirmed on:</strong> ${confirmedStr}</p>
           <p><strong>Vehicle:</strong> ${booking.vehicle.modelName}</p>
           <p><strong>Pickup:</strong> ${fmt(booking.pickupDatetime)}</p>
           <p><strong>Drop-off:</strong> ${fmt(booking.dropoffDatetime)}</p>
