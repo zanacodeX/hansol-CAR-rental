@@ -76,7 +76,7 @@ export default function Navbar() {
                       </span>
                     )}
                   </div>
-                  <button onClick={() => logoutAction()} className={`${isTransparent ? "text-gray-400 hover:text-white" : "text-gray-400 hover:text-red-600"} transition p-1`} title="Logout">
+                  <button onClick={() => { logoutAction(); setTimeout(() => { window.location.href = "/"; }, 100); }} className={`${isTransparent ? "text-gray-400 hover:text-white" : "text-gray-400 hover:text-red-600"} transition p-1`} title="Logout">
                     <LogOut className="h-4 w-4" />
                   </button>
                 </div>
@@ -142,7 +142,7 @@ export default function Navbar() {
                       Admin Dashboard
                     </Link>
                   )}
-                  <button onClick={() => { setMenuOpen(false); logoutAction(); }} className="block w-full text-left py-2.5 px-3 text-red-600 hover:bg-red-50 rounded-lg font-medium text-sm">
+                  <button onClick={() => { setMenuOpen(false); logoutAction(); setTimeout(() => { window.location.href = "/"; }, 100); }} className="block w-full text-left py-2.5 px-3 text-red-600 hover:bg-red-50 rounded-lg font-medium text-sm">
                     Logout
                   </button>
                 </div>
